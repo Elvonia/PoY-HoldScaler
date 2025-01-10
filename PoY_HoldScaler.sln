@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.35425.106
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoY_HoldScaler", "PoY_HoldScaler.csproj", "{CC9CF7D2-B74B-406D-938E-A6CD2C2D5E93}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug-BepInEx|Any CPU = Debug-BepInEx|Any CPU
+		Release-BepInEx|Any CPU = Release-BepInEx|Any CPU
+		Debug-MelonLoader|Any CPU = Debug-MelonLoader|Any CPU
+		Release-MelonLoader|Any CPU = Release-MelonLoader|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC9CF7D2-B74B-406D-938E-A6CD2C2D5E93}.Debug-BepInEx|Any CPU.ActiveCfg = Debug-BepInEx|Any CPU
+		{CC9CF7D2-B74B-406D-938E-A6CD2C2D5E93}.Debug-BepInEx|Any CPU.Build.0 = Debug-BepInEx|Any CPU
+		{CC9CF7D2-B74B-406D-938E-A6CD2C2D5E93}.Release-BepInEx|Any CPU.ActiveCfg = Release-BepInEx|Any CPU
+		{CC9CF7D2-B74B-406D-938E-A6CD2C2D5E93}.Release-BepInEx|Any CPU.Build.0 = Release-BepInEx|Any CPU
+		{CC9CF7D2-B74B-406D-938E-A6CD2C2D5E93}.Debug-MelonLoader|Any CPU.ActiveCfg = Debug-MelonLoader|Any CPU
+		{CC9CF7D2-B74B-406D-938E-A6CD2C2D5E93}.Debug-MelonLoader|Any CPU.Build.0 = Debug-MelonLoader|Any CPU
+		{CC9CF7D2-B74B-406D-938E-A6CD2C2D5E93}.Release-MelonLoader|Any CPU.ActiveCfg = Release-MelonLoader|Any CPU
+		{CC9CF7D2-B74B-406D-938E-A6CD2C2D5E93}.Release-MelonLoader|Any CPU.Build.0 = Release-MelonLoader|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3566F744-28BC-42EF-8C29-98756DC9E1AA}
+	EndGlobalSection
+EndGlobal
