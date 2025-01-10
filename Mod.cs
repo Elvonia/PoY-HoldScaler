@@ -9,6 +9,17 @@ namespace PoY_HoldScaler
 {
     public class Mod : MelonMod
     {
+        private string[] holdTypes = new string[]
+        {
+            "Climbable",
+            "ClimbableMicroHold",
+            "ClimbableRigidbody",
+            "Crack",
+            "ClimbablePitch",
+            "PinchHold",
+            "Volume"
+        };
+
         public override void OnSceneWasLoaded(int buildIndex, string sceneName)
         {
             ProcessAllClimbableMeshes();
@@ -21,11 +32,14 @@ namespace PoY_HoldScaler
 
             foreach (GameObject obj in allObjects)
             {
-                if (obj.CompareTag("Climbable"))
+                for (int i = 0; i < holdTypes.Length; i++)
                 {
-                    ProcessMeshFromCollider(obj);
-                    ScaleObject(obj, 2.0f);
-                    processedCount++;
+                    if (holdTypes[i].Equals(obj.tag))
+                    {
+                        ProcessMeshFromCollider(obj);
+                        ScaleObject(obj, 2.0f);
+                        processedCount++;
+                    }
                 }
             }
 
