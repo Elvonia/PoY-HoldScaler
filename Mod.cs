@@ -50,7 +50,7 @@ namespace PoY_HoldScaler
             }
 
             meshFilter.sharedMesh = meshCollider.sharedMesh;
-            MelonLogger.Msg($"Mesh '{meshCollider.sharedMesh.name}' on '{obj.name}' has been duplicated and assigned to the MeshFilter.");
+            MelonLogger.Msg($"Mesh '{meshCollider.sharedMesh.name}' on '{obj.name}' assigned.");
         }
 
         private void ScaleObject(GameObject obj, float scaleFactor)
