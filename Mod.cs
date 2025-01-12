@@ -36,9 +36,13 @@ namespace PoY_HoldScaler
                 {
                     if (holdTypes[i].Equals(obj.tag))
                     {
-                        ProcessMeshFromCollider(obj);
-                        ScaleObject(obj, 2.0f);
-                        processedCount++;
+                        bool exists = ProcessMeshFromCollider(obj);
+                        
+                        if (exists)
+                        {
+                            ScaleObject(obj, 2.0f);
+                            processedCount++;
+                        }
                     }
                 }
             }
@@ -46,7 +50,7 @@ namespace PoY_HoldScaler
             MelonLogger.Msg($"Processed {processedCount} 'Climbable' objects.");
         }
 
-        private void ProcessMeshFromCollider(GameObject obj)
+        private bool ProcessMeshFromCollider(GameObject obj)
         {
             MeshCollider meshCollider = obj.GetComponent<MeshCollider>();
             MeshFilter meshFilter = obj.GetComponent<MeshFilter>();
@@ -54,17 +58,18 @@ namespace PoY_HoldScaler
             if (meshCollider == null || meshCollider.sharedMesh == null)
             {
                 MelonLogger.Warning($"No valid MeshCollider found on '{obj.name}'");
-                return;
+                return false;
             }
 
             if (meshFilter == null)
             {
                 MelonLogger.Warning($"No MeshFilter found on '{obj.name}'");
-                return;
+                return false;
             }
 
             meshFilter.sharedMesh = meshCollider.sharedMesh;
             MelonLogger.Msg($"Mesh '{meshCollider.sharedMesh.name}' on '{obj.name}' assigned.");
+            return true;
         }
 
         private void ScaleObject(GameObject obj, float scaleFactor)
