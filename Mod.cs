@@ -9,6 +9,7 @@ namespace PoY_HoldScaler
 {
     public class Mod : MelonMod
     {
+        private float scaleFactor = 0.25f;
         private string[] holdTypes = new string[]
         {
             "Climbable",
@@ -16,6 +17,7 @@ namespace PoY_HoldScaler
             "ClimbableRigidbody",
             "Crack",
             "ClimbablePitch",
+            "Ice",
             "PinchHold",
             "Volume"
         };
@@ -36,13 +38,20 @@ namespace PoY_HoldScaler
                 {
                     if (holdTypes[i].Equals(obj.tag))
                     {
-                        bool exists = ProcessMeshFromCollider(obj);
-                        
-                        if (exists)
+                        if (ProcessMeshFromCollider(obj))
                         {
-                            ScaleObject(obj, 2.0f);
-                            processedCount++;
+                            ScaleObject(obj, scaleFactor);
                         }
+                        if (ProcessSphereFromCollider(obj))
+                        {
+                            ScaleObject(obj, scaleFactor);
+                        }
+                        if (ProcessBoxFromCollider(obj))
+                        {
+                            ScaleObject(obj, scaleFactor);
+                        }
+
+                        processedCount++;
                     }
                 }
             }
@@ -57,14 +66,16 @@ namespace PoY_HoldScaler
 
             if (meshCollider == null || meshCollider.sharedMesh == null)
             {
-                MelonLogger.Warning($"No valid MeshCollider found on '{obj.name}'");
-                return false;
+                meshCollider = obj.GetComponentInChildren<MeshCollider>();
+                if (meshCollider == null) // Child Ice
+                    return false;
             }
 
             if (meshFilter == null)
             {
-                MelonLogger.Warning($"No MeshFilter found on '{obj.name}'");
-                return false;
+                meshFilter = obj.GetComponentInChildren<MeshFilter>();
+                if (meshFilter == null) // Child Ice
+                    return false;
             }
 
             meshFilter.sharedMesh = meshCollider.sharedMesh;
@@ -72,10 +83,72 @@ namespace PoY_HoldScaler
             return true;
         }
 
+        private bool ProcessSphereFromCollider(GameObject obj)
+        {
+            SphereCollider sphereCollider = obj.GetComponent<SphereCollider>();
+
+            if (sphereCollider == null)
+            {
+                return false;
+            }
+
+            GameObject spherePrimitive = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            MeshFilter meshFilter = obj.GetComponent<MeshFilter>();
+
+            if (meshFilter == null)
+            {
+                return false;
+            }
+
+            float worldRadius = sphereCollider.radius * Mathf.Max(
+                obj.transform.localScale.x, 
+                obj.transform.localScale.y, 
+                obj.transform.localScale.z
+                );
+            float scaleFactor = worldRadius / 0.5f;
+
+            obj.transform.localScale = Vector3.one;
+            sphereCollider.radius = spherePrimitive.GetComponent<SphereCollider>().radius;
+            sphereCollider.center = spherePrimitive.GetComponent<SphereCollider>().center;
+            meshFilter.sharedMesh = spherePrimitive.GetComponent<MeshFilter>().sharedMesh;
+            obj.transform.localScale *= scaleFactor;
+
+            GameObject.DestroyImmediate(spherePrimitive);
+
+            return true;
+        }
+
+        private bool ProcessBoxFromCollider(GameObject obj)
+        {
+            BoxCollider boxCollider = obj.GetComponent<BoxCollider>();
+            if (boxCollider == null)
+            {
+                return false;
+            }
+
+            MeshFilter meshFilter = obj.GetComponent<MeshFilter>();
+            if (meshFilter == null)
+            {
+                return false;
+            }
+            GameObject cubePrimitive = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            Vector3 scaleFactor = Vector3.Scale(boxCollider.size, obj.transform.localScale);          
+            
+            obj.transform.localScale = Vector3.one;
+            boxCollider.size = cubePrimitive.GetComponent<BoxCollider>().size;
+            boxCollider.center = cubePrimitive.GetComponent<BoxCollider>().center;
+            meshFilter.sharedMesh = cubePrimitive.GetComponent<MeshFilter>().sharedMesh;
+            obj.transform.localScale = scaleFactor;
+
+            GameObject.DestroyImmediate(cubePrimitive);
+
+            return true;
+        }
+
         private void ScaleObject(GameObject obj, float scaleFactor)
         {
             obj.transform.localScale *= scaleFactor;
-            MelonLogger.Msg($"Scaled '{obj.name}' to {obj.transform.localScale}");
+            MelonLogger.Msg($"Scaled: '{obj.name}' to {obj.transform.localScale}");
         }
     }
 }
