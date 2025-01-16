@@ -66,16 +66,12 @@ namespace PoY_HoldScaler
 
             if (meshCollider == null || meshCollider.sharedMesh == null)
             {
-                meshCollider = obj.GetComponentInChildren<MeshCollider>();
-                if (meshCollider == null) // Child Ice
-                    return false;
+                return false;
             }
 
             if (meshFilter == null)
             {
-                meshFilter = obj.GetComponentInChildren<MeshFilter>();
-                if (meshFilter == null) // Child Ice
-                    return false;
+                return false;
             }
 
             meshFilter.sharedMesh = meshCollider.sharedMesh;
@@ -121,16 +117,19 @@ namespace PoY_HoldScaler
         private bool ProcessBoxFromCollider(GameObject obj)
         {
             BoxCollider boxCollider = obj.GetComponent<BoxCollider>();
+
             if (boxCollider == null)
             {
                 return false;
             }
 
             MeshFilter meshFilter = obj.GetComponent<MeshFilter>();
+
             if (meshFilter == null)
             {
                 return false;
             }
+
             GameObject cubePrimitive = GameObject.CreatePrimitive(PrimitiveType.Cube);
             Vector3 scaleFactor = Vector3.Scale(boxCollider.size, obj.transform.localScale);          
             
